@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: paypal-easy
-Version: 0.1.7
+Version: 0.1.8
 Summary: A simplified wrapper for PayPal's Python Server SDK
 Home-page: https://github.com/doculearn/paypal-easy
 Author: William Mabotja
@@ -55,6 +55,16 @@ PayPal Easy solves these problems by providing:
 - ✅ Type hints and IDE support
 - ✅ Simplified method signatures
 - ✅ Django integration helpers
+
+## Demo
+
+Here is a sample Django project that implements paypal-easy
+
+https://github.com/doculearn/paypal-easy-demo
+
+## Video Walkthrough
+
+<a href="https://youtu.be/EMO9o9O4Fh4?si=5kgIg6Rlbwljzs_W">Watch on Youtube</a>
 
 ## Installation
 
