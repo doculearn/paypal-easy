@@ -5,8 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="paypal-easy",
-    packages=["paypal_easy"], 
+    name="paypal-easy", 
     package_dir={"paypal_easy": "paypal_easy"},
     version="0.1.3",
     author="William Mabotja",
