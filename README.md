@@ -18,6 +18,16 @@ PayPal Easy solves these problems by providing:
 - ✅ Simplified method signatures
 - ✅ Django integration helpers
 
+## Demo
+
+Here is a sample Django project that implements paypal-easy
+
+https://github.com/doculearn/paypal-easy-demo
+
+## Video Walkthrough
+
+<a href="https://youtu.be/EMO9o9O4Fh4?si=5kgIg6Rlbwljzs_W">Watch on Youtube</a>
+
 ## Installation
 
 ```bash
