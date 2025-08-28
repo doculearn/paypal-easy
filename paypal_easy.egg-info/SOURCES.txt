@@ -1,10 +1,10 @@
 README.md
 setup.py
-paypal-easy/__init__.py
-paypal-easy/client.py
-paypal-easy/django_integration.py
-paypal-easy/enums.py
-paypal-easy/models.py
+paypal_easy/__init__.py
+paypal_easy/client.py
+paypal_easy/django_integration.py
+paypal_easy/enums.py
+paypal_easy/models.py
 paypal_easy.egg-info/PKG-INFO
 paypal_easy.egg-info/SOURCES.txt
 paypal_easy.egg-info/dependency_links.txt

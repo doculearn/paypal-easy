@@ -57,73 +57,80 @@ class PayPalEasyClient:
         
         logger.info(f"PayPal Easy client initialized for {environment.value}")
     
-    def create_order(
-        self,
-        amount: Union[Decimal, float, str],
-        currency: Currency = Currency.USD,
-        intent: OrderIntent = OrderIntent.CAPTURE,
-        reference_id: Optional[str] = None,
-        description: Optional[str] = None,
-        return_url: Optional[str] = None,
-        cancel_url: Optional[str] = None,
-        brand_name: Optional[str] = None
-    ) -> Union[PayPalOrderResponse, PayPalError]:
-        """
-        Create a PayPal order with simplified parameters
-        
-        Args:
-            amount: Order amount
-            currency: Currency code
-            intent: CAPTURE or AUTHORIZE
-            reference_id: Optional reference ID
-            description: Optional description
-            return_url: URL to redirect after approval
-            cancel_url: URL to redirect if cancelled
-            brand_name: Brand name to display
-            
-        Returns:
-            PayPalOrderResponse on success, PayPalError on failure
-        """
+    def create_order(self, amount, currency=Currency.USD, description="", return_url="", cancel_url="", brand_name=""):
         try:
-            # Convert amount to Decimal
-            if isinstance(amount, (int, float, str)):
-                amount = Decimal(str(amount))
+            # Convert amount to string
+            amount_str = str(amount)
             
-            # Create order model
-            order = PayPalOrder(
-                amount=amount,
-                currency=currency,
-                intent=intent,
-                reference_id=reference_id,
-                description=description,
-                return_url=return_url,
-                cancel_url=cancel_url,
-                brand_name=brand_name
-            )
+            # Create the order request dictionary in the correct format
+            order_data = {
+                "intent": "CAPTURE",
+                "purchase_units": [
+                    {
+                        "amount": {
+                            "currency_code": currency.value,
+                            "value": amount_str
+                        },
+                        "description": description
+                    }
+                ]
+            }
             
-            # Convert to PayPal format
-            order_request = OrderRequest(order.to_paypal_dict())
+            # Add payment source if URLs provided
+            if return_url and cancel_url:
+                order_data["payment_source"] = {
+                    "paypal": {
+                        "experience_context": {
+                            "return_url": return_url,
+                            "cancel_url": cancel_url,
+                            "shipping_preference": "NO_SHIPPING",
+                            "user_action": "PAY_NOW",
+                            "landing_page": "LOGIN"
+                        }
+                    }
+                }
+                
+                if brand_name:
+                    order_data["payment_source"]["paypal"]["experience_context"]["brand_name"] = brand_name
+            
+            # Create OrderRequest with the dictionary
+            order_request = OrderRequest(order_data)
             
             # Make API call
             response = self.client.orders.create_order({
                 'body': order_request
             })
             
+            # Process response...
             if response.status_code == 201:
-                logger.info(f"PayPal order created successfully: {response.body.id}")
-                return PayPalOrderResponse.from_paypal_response(response.body)
+                order = response.body
+                approval_url = None
+                
+                if hasattr(order, 'links') and order.links:
+                    for link in order.links:
+                        if hasattr(link, 'rel') and link.rel == "approve":
+                            approval_url = getattr(link, 'href', None)
+                            break
+                
+                from .models import PayPalOrderResponse
+                from .enums import OrderStatus
+                
+                return PayPalOrderResponse(
+                    id=order.id,
+                    status=OrderStatus(order.status),
+                    approval_url=approval_url
+                )
             else:
-                logger.error(f"PayPal order creation failed: {response.status_code}")
+                from .models import PayPalError
                 return PayPalError(
                     message=f"Order creation failed with status {response.status_code}",
                     status_code=response.status_code
                 )
                 
         except Exception as e:
-            logger.error(f"Error creating PayPal order: {str(e)}")
-            return PayPalError(
-                message=f"Order creation error: {str(e)}"
-            )
+            from .models import PayPalError
+            return PayPalError(message=str(e))
+    
     
     def get_order(self, order_id: str) -> Union[PayPalOrderResponse, PayPalError]:
         """

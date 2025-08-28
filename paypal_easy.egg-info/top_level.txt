@@ -1,2 +1,2 @@
-paypal-easy
+paypal_easy
 test
