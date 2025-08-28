@@ -6,6 +6,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="paypal-easy",
+    packages=["paypal_easy"], 
+    package_dir={"paypal_easy": "paypal_easy"},
     version="0.1.3",
     author="William Mabotja",
     author_email="info@williammabotja.xyz",
