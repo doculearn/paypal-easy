@@ -132,7 +132,7 @@ Contributions welcome! Please feel free to submit issues and enhancement request
 
 Would you like to support the work we do?
 
-Click Here to Donate - <a href="https://www.paypal.com/donate/?hosted_button_id=L7VG622B9XESL" target="blank">Donate Link</a>
+Click Here to Donate - <a href="https://www.paypal.com/donate/?hosted_button_id=L7VG622B9XESL" target="_blank">Donate Link</a>
 
 ## License
 
