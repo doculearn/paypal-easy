@@ -1,3 +1,41 @@
+Metadata-Version: 2.4
+Name: paypal-easy
+Version: 0.1.2
+Summary: A simplified wrapper for PayPal's Python Server SDK
+Home-page: https://github.com/doculearn/paypal-easy
+Author: William Mabotja
+Author-email: info@williammabotja.xyz
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: paypal-server-sdk>=1.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest>=6.0; extra == "test"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
 # README.md
 # PayPal Easy
 

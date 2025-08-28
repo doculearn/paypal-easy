@@ -6,13 +6,13 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="paypal-easy",
-    version="0.1.0",
-    author="Your Name",
-    author_email="your.email@example.com",
+    version="0.1.3",
+    author="William Mabotja",
+    author_email="info@williammabotja.xyz",
     description="A simplified wrapper for PayPal's Python Server SDK",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/paypal-easy",
+    url="https://github.com/doculearn/paypal-easy",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",
@@ -37,5 +37,6 @@ setup(
             "black",
             "flake8",
         ],
+        "test": ["pytest>=6.0"]
     },
 )
