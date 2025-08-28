@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: paypal-easy
-Version: 0.1.5
+Version: 0.1.6
 Summary: A simplified wrapper for PayPal's Python Server SDK
 Home-page: https://github.com/doculearn/paypal-easy
 Author: William Mabotja

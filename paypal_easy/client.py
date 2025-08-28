@@ -13,7 +13,7 @@ from paypalserversdk.http.auth.o_auth_2 import ClientCredentialsAuthCredentials
 from paypalserversdk.models.order_request import OrderRequest
 
 from .models import PayPalOrder, PayPalOrderResponse, PayPalError
-from .enums import Environment, Currency, OrderIntent
+from .enums import Environment, Currency, OrderIntent, OrderStatus
 
 logger = logging.getLogger(__name__)
 
@@ -109,20 +109,16 @@ class PayPalEasyClient:
                 # Extract approval URL from links
                 if hasattr(order, 'links') and order.links:
                     for link in order.links:
-                        if hasattr(link, 'rel') and link.rel == "approve":
+                        if hasattr(link, 'rel') and link.rel == "payer-action":
                             approval_url = getattr(link, 'href', None)
                             break
-                
-                from .models import PayPalOrderResponse
-                from .enums import OrderStatus
-                
+
                 return PayPalOrderResponse(
                     id=order.id,
                     status=OrderStatus(order.status),
                     approval_url=approval_url
                 )
             else:
-                from .models import PayPalError
                 return PayPalError(
                     message=f"Order creation failed with status {response.status_code}",
                     status_code=response.status_code
