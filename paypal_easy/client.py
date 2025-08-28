@@ -59,53 +59,54 @@ class PayPalEasyClient:
     
     def create_order(self, amount, currency=Currency.USD, description="", return_url="", cancel_url="", brand_name=""):
         try:
+            from paypalserversdk.models.amount_with_breakdown import AmountWithBreakdown
+            from paypalserversdk.models.purchase_unit_request import PurchaseUnitRequest
+            from paypalserversdk.models.order_request import OrderRequest
+            
             # Convert amount to string
             amount_str = str(amount)
             
-            # Create the order request dictionary in the correct format
-            order_data = {
-                "intent": "CAPTURE",
-                "purchase_units": [
-                    {
-                        "amount": {
-                            "currency_code": currency.value,
-                            "value": amount_str
-                        },
-                        "description": description
-                    }
-                ]
-            }
+            # Create amount with breakdown
+            amount_with_breakdown = AmountWithBreakdown(
+                currency_code=currency.value,
+                value=amount_str
+            )
             
-            # Add payment source if URLs provided
-            if return_url and cancel_url:
-                order_data["payment_source"] = {
+            # Create purchase unit request  
+            purchase_unit_request = PurchaseUnitRequest(
+                amount=amount_with_breakdown,
+                description=description
+            )
+            
+            # Create order request
+            order_request = OrderRequest(
+                intent="CAPTURE",  # Use string instead of enum
+                purchase_units=[purchase_unit_request],
+                payment_source={
                     "paypal": {
                         "experience_context": {
                             "return_url": return_url,
                             "cancel_url": cancel_url,
                             "shipping_preference": "NO_SHIPPING",
                             "user_action": "PAY_NOW",
-                            "landing_page": "LOGIN"
+                            "landing_page": "LOGIN",
+                            "brand_name": brand_name or "PayPal Easy Demo"
                         }
                     }
-                }
-                
-                if brand_name:
-                    order_data["payment_source"]["paypal"]["experience_context"]["brand_name"] = brand_name
-            
-            # Create OrderRequest with the dictionary
-            order_request = OrderRequest(order_data)
+                } if return_url and cancel_url else None
+            )
             
             # Make API call
             response = self.client.orders.create_order({
                 'body': order_request
             })
             
-            # Process response...
-            if response.status_code == 201:
+            # Check for success (200 or 201 are both success)
+            if response.status_code in [200, 201]:
                 order = response.body
                 approval_url = None
                 
+                # Extract approval URL from links
                 if hasattr(order, 'links') and order.links:
                     for link in order.links:
                         if hasattr(link, 'rel') and link.rel == "approve":
@@ -128,7 +129,6 @@ class PayPalEasyClient:
                 )
                 
         except Exception as e:
-            from .models import PayPalError
             return PayPalError(message=str(e))
     
     
