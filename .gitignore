@@ -1,0 +1,13 @@
+/dist
+/paypal_easy.egg-info
+/__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+.env
+.venv/
+env.bak/
