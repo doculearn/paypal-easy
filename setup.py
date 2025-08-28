@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="paypal-easy",
-    version="0.1.2",
+    version="0.1.3",
     author="William Mabotja",
     author_email="info@williammabotja.xyz",
     description="A simplified wrapper for PayPal's Python Server SDK",
